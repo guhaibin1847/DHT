@@ -1,19 +1,21 @@
 package com.github.bcap.dht.node;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class Bucket implements Serializable, Iterable<NodeRef> {
+public class Bucket extends Identifier implements Serializable, Iterable<NodeRef> {
 
 	private static final long serialVersionUID = 1L;
 
 	public static final int MAX_SIZE = 20;
 	
-	private List<NodeRef> nodes;
+	private List<NodeRef> nodes; 
 	
-	public Bucket() {
+	public Bucket(BigInteger id) {
+		super(id);
 		this.nodes = new ArrayList<NodeRef>();
 	}
 	

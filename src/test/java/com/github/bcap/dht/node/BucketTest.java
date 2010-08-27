@@ -14,7 +14,7 @@ public class BucketTest {
 	
 	@Before
 	public void setUp() {
-		bucket = new Bucket();
+		bucket = new Bucket(BigInteger.ZERO);
 		node = new NodeRef(BigInteger.ZERO);
 	}
 	

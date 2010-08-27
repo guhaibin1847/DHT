@@ -10,17 +10,65 @@ public class NodeTest {
 
 	@Test
 	public void testNodeDistance() {
-		String bits1 = "100000000100000000000010";
-		String bits2 = "000010000000010000000010";
-		String bitsR = "100010000100010000000000";
+		BigInteger bits1 = new BigInteger("100000000100000000000010", 2);
+		BigInteger bits2 = new BigInteger("000010000000010000000010", 2);
+		BigInteger bitsR = new BigInteger("100010000100010000000000", 2);
 		
-		Node node1 = new Node(new BigInteger(bits1, 2).toByteArray());
-		Node node2 = new Node(new BigInteger(bits2, 2).toByteArray());
+		Node node1 = new Node(bits1);
+		Node node2 = new Node(bits2);
 		
 		BigInteger distance = node1.getDistance(node2);
 		BigInteger reverseDistance = node2.getDistance(node1);
 		
-		assertEquals(bitsR, distance.toString(2));
+		assertEquals(bitsR, distance);
 		assertEquals(distance, reverseDistance);
+	}
+	
+	@Test
+	public void testBucketCreation() {
+		Node node = new Node(BigInteger.ONE);
+		for(int i = 0; i < Identifier.LENGTH; i++) {
+			Bucket bucket = node.getBucket(i);
+			assertNotNull(bucket);
+			assertEquals(BigInteger.ONE.shiftLeft(i), bucket.getValue());
+		}
+		
+		try {
+			node.getBucket(Identifier.LENGTH);
+			fail("Exception should be thrown");
+		} catch(ArrayIndexOutOfBoundsException e) {
+			
+		}
+	}
+	
+	@Test
+	public void testBucketLocation() {
+		Node baseNode = new Node(BigInteger.ZERO);
+		
+		BigInteger[] nodes = new BigInteger[] {
+			new BigInteger("00000000000000", 2),
+			new BigInteger("00000000000001", 2),
+			new BigInteger("00000000000010", 2),
+			new BigInteger("10000000000000", 2),
+			new BigInteger("10101010101010", 2),
+			new BigInteger("00000010010011", 2),
+			new BigInteger("01010110010011", 2),
+		};
+		BigInteger[] buckets = new BigInteger[] {
+			new BigInteger("00000000000001", 2),
+			new BigInteger("00000000000001", 2),
+			new BigInteger("00000000000010", 2),
+			new BigInteger("10000000000000", 2),
+			new BigInteger("10000000000000", 2),
+			new BigInteger("00000010000000", 2),
+			new BigInteger("01000000000000", 2),
+		};
+		
+		for (int i = 0; i < nodes.length; i++) {
+			Node node = new Node(nodes[i]);
+			Bucket bucket = baseNode.getBucketForId(node);
+			assertNotNull(bucket);
+			assertEquals(buckets[i], bucket.getValue());
+		}
 	}
 }
