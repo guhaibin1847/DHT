@@ -1,5 +1,9 @@
 package com.github.bcap.dht.messaging.response;
 
-public class PingResponse extends Response {
+import java.io.Serializable;
+
+public class PingResponse extends Response implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 }
