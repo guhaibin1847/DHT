@@ -1,6 +1,5 @@
 package com.github.bcap.dht.node;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -13,8 +12,8 @@ public class NodeRefTest {
 	@Test
 	public void testEquals() {
 		
-		byte[] ip1 = new byte[]{(byte) 200, (byte) 200, (byte) 200, (byte) 200};
-		byte[] ip2 = new byte[]{(byte) 192, (byte) 168, (byte) 1, (byte) 1};
+		int[] ip1 = new int[]{200, 200, 200, 200};
+		int[] ip2 = new int[]{192, 168, 1, 1};
 		int port = 5000;
 		
 		Contact node1 = new Contact(new BigInteger("101000", 2), ip1, port);
