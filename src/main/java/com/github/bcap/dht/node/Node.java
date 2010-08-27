@@ -3,24 +3,26 @@ package com.github.bcap.dht.node;
 import java.io.Serializable;
 import java.math.BigInteger;
 
-public class Node extends NodeRef implements Serializable {
+public class Node extends Identifier implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private transient Bucket[] buckets;
+	private Bucket[] buckets;
 	
-	public Node(BigInteger id) {
-		super(id);
+	public Node() {
 		createBuckets();
 	}
 	
-	public Node(byte[] id) {
-		super(id);
+	public Node(BigInteger value) {
+		super(value);
 		createBuckets();
 	}
 	
 	public int getBucketIndex(Identifier id) {
-		return id.getValue().equals(BigInteger.ZERO) ? 0 : id.getValue().bitLength() - 1;
+		int index = id.getValue().bitLength();
+		if(index > 0)
+			index--;
+		return index;
 	}
 	
 	public Bucket getBucket(int index) {
@@ -39,5 +41,4 @@ public class Node extends NodeRef implements Serializable {
 			bucketId = bucketId.shiftLeft(1);
 		}
 	}
-	
 }

@@ -10,12 +10,12 @@ import org.junit.Test;
 public class BucketTest {
 	
 	private Bucket bucket;
-	private NodeRef node;
+	private Contact node;
 	
 	@Before
 	public void setUp() {
 		bucket = new Bucket(BigInteger.ZERO);
-		node = new NodeRef(BigInteger.ZERO);
+		node = new Contact();
 	}
 	
 	@Test
@@ -23,12 +23,12 @@ public class BucketTest {
 		assertEquals(0, bucket.size());
 
 		for(int i = 1; i <= Bucket.MAX_SIZE; i++) {
-			bucket.addNode(node);
+			bucket.addContact(node);
 			assertEquals(i, bucket.size());
 		}
 		
 		try {
-			bucket.addNode(node);
+			bucket.addContact(node);
 			fail("bucket addition should fail");
 		} catch (IllegalStateException e) {
 			assertEquals(Bucket.MAX_SIZE, bucket.size());
@@ -40,9 +40,9 @@ public class BucketTest {
 		assertFalse(bucket.iterator().hasNext());
 
 		for(int i = 1; i <= Bucket.MAX_SIZE; i++) {
-			bucket.addNode(node);
+			bucket.addContact(node);
 			int iterated = 0;
-			for (NodeRef iteratedNode : bucket)
+			for (Contact iteratedNode : bucket)
 				iterated++;
 			assertEquals(i, iterated);
 		}

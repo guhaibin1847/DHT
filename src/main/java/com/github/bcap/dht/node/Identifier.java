@@ -4,28 +4,30 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Collection;
 
-public class Identifier implements Serializable, Comparable<Identifier> {
+public class Identifier implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 
 	public static final int LENGTH = 128;
 	
-	private BigInteger id;
+	private BigInteger value;
 
-	protected Identifier(byte[] id) {
-		this(new BigInteger(1, id));
-	}
+	public Identifier() {}
 	
-	protected Identifier(BigInteger id) {
-		this.id = id;
+	public Identifier(BigInteger value) {
+		this.value = value;
 	}
 	
 	public BigInteger getValue() {
-		return this.id;
+		return this.value;
+	}
+	
+	public void setValue(BigInteger value) {
+		this.value = value;
 	}
 	
 	public BigInteger getDistance(Identifier anotherId) {
-		return this.id.xor(anotherId.id);
+		return this.value.xor(anotherId.value);
 	}
 	
 	public <T extends Identifier> T getClosest(Collection<T> identifiers) {
@@ -43,15 +45,6 @@ public class Identifier implements Serializable, Comparable<Identifier> {
 		return result;
 	}
 	
-	public int compareTo(Identifier that) {
-		if(that == null)
-			return -1;
-		else if (this.equals(that))
-			return 0;
-		else 
-			return this.id.compareTo(that.id);
-	}
-	
 	public boolean equals(Object obj) {
 		if(obj instanceof Identifier) {
 			Identifier that = (Identifier) obj;
@@ -60,7 +53,7 @@ public class Identifier implements Serializable, Comparable<Identifier> {
 			else if (this == that)
 				return true;
 			else 
-				return this.id.equals(that.id);
+				return this.value.equals(that.value);
 		} else {
 			return false;
 		}

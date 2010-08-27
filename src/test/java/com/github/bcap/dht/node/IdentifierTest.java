@@ -9,7 +9,7 @@ import org.junit.Test;
 public class IdentifierTest {
 	
 	@Test
-	public void testEqualsAndCompare() {
+	public void testEquals() {
 		Identifier id1 = new Identifier(new BigInteger("101000", 2));
 		Identifier id2 = new Identifier(new BigInteger("00101000", 2));
 		Identifier id3 = new Identifier(new BigInteger("101111", 2));
@@ -24,13 +24,5 @@ public class IdentifierTest {
 		
 		assertFalse(id1.equals(null));
 		assertFalse(id1.equals(new Object()));
-		
-		assertEquals(0, id1.compareTo(id2));
-		assertEquals(0, id2.compareTo(id1));
-		
-		assertEquals(-1, id1.compareTo(id3));
-		assertEquals(-1, id2.compareTo(id3));
-		assertEquals(+1, id3.compareTo(id1));
-		assertEquals(+1, id3.compareTo(id2));
 	}
 }
