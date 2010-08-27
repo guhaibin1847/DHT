@@ -5,4 +5,10 @@ import com.github.bcap.dht.message.response.FindNodeResponse;
 
 public class FindNode extends Operation<FindNodeRequest, FindNodeResponse> {
 
+	@Override
+	public void handleResponse(FindNodeResponse response) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

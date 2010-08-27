@@ -6,4 +6,10 @@ import com.github.bcap.dht.message.request.FindValueRequest;
 
 public class FindValue extends Operation<FindValueRequest, FindValueResponse> {
 
+	@Override
+	public void handleResponse(FindValueResponse response) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
