@@ -2,15 +2,8 @@ package com.github.bcap.dht.messaging.request;
 
 import java.io.Serializable;
 
-import com.github.bcap.dht.node.Contact;
-import com.github.bcap.dht.node.Identifier;
-
-public class FindNodeRequest extends Request implements Serializable {
+public class FindNodeRequest extends IdentifierRequest implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private Contact source;
-	
-	private Identifier query;
-	
 }
