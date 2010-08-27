@@ -2,16 +2,12 @@ package com.github.bcap.dht.node;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Node extends NodeRef implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final int BUCKET_SIZE = 20;
-	
-	private transient List<NodeRef>[] buckets;
+	private transient Bucket[] buckets;
 	
 	public Node(BigInteger id) {
 		super(id);
@@ -23,23 +19,22 @@ public class Node extends NodeRef implements Serializable {
 		createBuckets();
 	}
 	
-	public AddNodeResult addNode(NodeRef node) {
-		boolean added;
-		int index = getBucketIndex(node);
-		if(added = buckets[index].size() < BUCKET_SIZE)
-			buckets[index].add(node);
-		return new AddNodeResult(index, added);
+	public int getBucketIndex(Identifier id) {
+		return this.getDistance(id).bitLength();
 	}
 	
-	protected int getBucketIndex(Identifier id) {
-		BigInteger distance = this.getDistance(id);
-		return distance.bitLength();
+	public Bucket getBucket(int index) {
+		return buckets[index];
+	}
+	
+	public Bucket getBucketForId(Identifier id) {
+		return getBucket(getBucketIndex(id));
 	}
 	
 	private void createBuckets() {
-		this.buckets = new List[LENGTH];
+		this.buckets = new Bucket[LENGTH];
 		for (int i = 0; i < buckets.length; i++)
-			this.buckets[i] = new ArrayList<NodeRef>();
+			this.buckets[i] = new Bucket();
 	}
 	
 }
