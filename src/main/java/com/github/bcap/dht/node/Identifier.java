@@ -12,7 +12,7 @@ public class Identifier implements Serializable {
 	
 	private BigInteger value;
 
-	public Identifier() {}
+	protected Identifier() {}
 	
 	public Identifier(BigInteger value) {
 		this.value = value;
@@ -20,10 +20,6 @@ public class Identifier implements Serializable {
 	
 	public BigInteger getValue() {
 		return this.value;
-	}
-	
-	public void setValue(BigInteger value) {
-		this.value = value;
 	}
 	
 	public BigInteger getDistance(Identifier anotherId) {
@@ -58,4 +54,6 @@ public class Identifier implements Serializable {
 			return false;
 		}
 	}
+	
+	
 }

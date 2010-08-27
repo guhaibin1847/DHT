@@ -9,7 +9,7 @@ public class Node extends Identifier implements Serializable {
 
 	private Bucket[] buckets;
 	
-	public Node() {
+	protected Node() {
 		createBuckets();
 	}
 	

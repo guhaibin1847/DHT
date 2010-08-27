@@ -15,7 +15,7 @@ public class Bucket extends Identifier implements Serializable, Iterable<Contact
 	
 	private SortedSet<Contact> contacts = new TreeSet<Contact>(new AliveTimeComparator());
 	
-	public Bucket() {}
+	protected Bucket() {}
 	
 	public Bucket(BigInteger id) {
 		super(id);
@@ -26,7 +26,7 @@ public class Bucket extends Identifier implements Serializable, Iterable<Contact
 	}
 	
 	public void addContact(Contact contact) throws IllegalStateException {
-		if(this.size() >= MAX_SIZE)
+		if(!contacts.contains(contact) && this.size() >= MAX_SIZE)
 			throw new IllegalStateException("Cannot add, bucket at max capacity of " + MAX_SIZE);
 		else
 			contacts.add(contact);

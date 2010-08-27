@@ -9,17 +9,17 @@ public class Contact extends Identifier implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private byte[] ip;
+	private int[] ip;
 	private Integer port;
 
 	private Date discoveryDate;
 	private Date lastAliveDate;
 
-	public Contact(){
+	protected Contact(){
 		this.resetDates();
 	}
 	
-	public Contact(BigInteger id, byte[] ip, int port) {
+	public Contact(BigInteger id, int[] ip, int port) {
 		super(id);
 		this.ip = ip;
 		this.port = port;
@@ -35,11 +35,11 @@ public class Contact extends Identifier implements Serializable {
 		this.lastAliveDate = new Date();
 	}
 
-	public byte[] getIp() {
+	public int[] getIp() {
 		return this.ip != null ? Arrays.copyOf(this.ip, this.ip.length) : null;
 	}
 
-	public void setIp(byte[] ip) {
+	public void setIp(int[] ip) {
 		this.ip = ip != null ? Arrays.copyOf(ip, ip.length) : null;
 	}
 
