@@ -20,7 +20,7 @@ public class Node extends NodeRef implements Serializable {
 	}
 	
 	public int getBucketIndex(Identifier id) {
-		return this.getDistance(id).bitLength();
+		return id.getValue().equals(BigInteger.ZERO) ? 0 : id.getValue().bitLength() - 1;
 	}
 	
 	public Bucket getBucket(int index) {
@@ -32,9 +32,12 @@ public class Node extends NodeRef implements Serializable {
 	}
 	
 	private void createBuckets() {
+		BigInteger bucketId = BigInteger.ONE;
 		this.buckets = new Bucket[LENGTH];
-		for (int i = 0; i < buckets.length; i++)
-			this.buckets[i] = new Bucket();
+		for (int i = 0; i < buckets.length; i++) {
+			this.buckets[i] = new Bucket(bucketId);
+			bucketId = bucketId.shiftLeft(1);
+		}
 	}
 	
 }

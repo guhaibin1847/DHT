@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Collection;
 
-public abstract class Identifier implements Serializable, Comparable<Identifier> {
+public class Identifier implements Serializable, Comparable<Identifier> {
 	
 	private static final long serialVersionUID = 1L;
 
@@ -12,8 +12,6 @@ public abstract class Identifier implements Serializable, Comparable<Identifier>
 	
 	private BigInteger id;
 
-	protected Identifier() { }
-	
 	protected Identifier(byte[] id) {
 		this(new BigInteger(1, id));
 	}
