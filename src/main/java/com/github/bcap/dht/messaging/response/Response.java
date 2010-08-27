@@ -1,5 +1,7 @@
 package com.github.bcap.dht.messaging.response;
 
-public abstract class Response {
+import com.github.bcap.dht.messaging.Message;
+
+public abstract class Response extends Message {
 
 }

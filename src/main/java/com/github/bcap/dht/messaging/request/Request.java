@@ -2,15 +2,13 @@ package com.github.bcap.dht.messaging.request;
 
 import java.util.Date;
 
-import com.github.bcap.dht.node.Contact;
+import com.github.bcap.dht.messaging.Message;
 
-public abstract class Request {
+public abstract class Request extends Message {
 
 	private static long REQUEST_COUNTER = 0;
 
 	private long requestId;
-
-	private Contact source;
 
 	private transient Date issuedDate;
 
@@ -28,14 +26,6 @@ public abstract class Request {
 
 	public long getRequestId() {
 		return this.requestId;
-	}
-
-	public Contact getSource() {
-		return source;
-	}
-
-	public void setSource(Contact source) {
-		this.source = source;
 	}
 
 	public static synchronized long getActualId() {
