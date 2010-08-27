@@ -1,5 +1,5 @@
 package com.github.bcap.dht.messaging.request;
 
-public class Store extends Request {
+public class StoreRequest extends Request {
 
 }

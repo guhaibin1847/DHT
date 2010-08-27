@@ -1,5 +1,5 @@
 package com.github.bcap.dht.messaging.request;
 
-public class FindValue extends Request {
+public class FindValueRequest extends Request {
 
 }
