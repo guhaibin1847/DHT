@@ -1,4 +1,4 @@
-package com.github.bcap.dht.server;
+package com.github.bcap.dht.client;
 
 import com.github.bcap.dht.message.response.Response;
 

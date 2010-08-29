@@ -1,4 +1,4 @@
-package com.github.bcap.dht.operation;
+package com.github.bcap.dht.client.operation;
 
 import com.github.bcap.dht.message.request.FindNodeRequest;
 import com.github.bcap.dht.message.response.FindNodeResponse;
