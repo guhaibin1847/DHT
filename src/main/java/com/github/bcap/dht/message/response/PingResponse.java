@@ -6,7 +6,7 @@ import com.github.bcap.dht.message.request.PingRequest;
 
 public class PingResponse extends Response implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = Response.serialVersionUID + 1L;
 
 	public PingResponse(PingRequest request) {
 		super(request);
