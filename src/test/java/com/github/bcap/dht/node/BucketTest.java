@@ -1,8 +1,13 @@
 package com.github.bcap.dht.node;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.fail;
 
 import java.math.BigInteger;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Date;
 
 import org.junit.Before;
@@ -12,13 +17,13 @@ public class BucketTest {
 	
 	private Bucket bucket;
 	private Contact node;
-	private int[] ip;
+	private InetAddress ip;
 	private int port;
 	
 	@Before
-	public void setUp() {
+	public void setUp() throws UnknownHostException {
 		bucket = new Bucket(BigInteger.ZERO);
-		ip = new int[] {192, 168, 1, 1 };
+		ip = Inet4Address.getByName("127.0.0.1");
 		node = new Contact(BigInteger.ONE, ip, port);
 	}
 	
