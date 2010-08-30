@@ -245,6 +245,10 @@ public class Server extends Thread implements Runnable {
 			}
 		});
 	}
+	
+	public boolean isRunning() {
+		return running;
+	}
 
 	private void createWorkerThreadPool() {
 		logger.debug("Creating a worker thread pool with size ranging from " + minimumPoolSize + " to " + maximumPoolSize + " and with a thread alive timeout of " + poolThreadAliveTime + "ms");
@@ -275,59 +279,67 @@ public class Server extends Thread implements Runnable {
 		return new ArrayList<Node>(nodes.values());
 	}
 
-	public InetAddress getIp() {
-		return ip;
-	}
-
-	public int getPort() {
-		return port;
-	}
-
 	public int getBacklogSize() {
 		return backlogSize;
-	}
-
-	public void setBacklogSize(int backlogSize) {
-		this.backlogSize = backlogSize;
 	}
 
 	public int getMinimumPoolSize() {
 		return minimumPoolSize;
 	}
-
-	public void setMinimumPoolSize(int minimumPoolSize) {
-		this.minimumPoolSize = minimumPoolSize;
-	}
-
+	
 	public int getMaximumPoolSize() {
 		return maximumPoolSize;
 	}
-
-	public void setMaximumPoolSize(int maximumPoolSize) {
-		this.maximumPoolSize = maximumPoolSize;
-	}
-
+	
 	public long getPoolThreadAliveTime() {
 		return poolThreadAliveTime;
 	}
-
-	public void setPoolThreadAliveTime(long poolThreadAliveTime) {
-		this.poolThreadAliveTime = poolThreadAliveTime;
-	}
-
+	
 	public ThreadPoolExecutor getWorkerThreadPool() {
 		return workerThreadPool;
 	}
+	
+	public InetAddress getIp() {
+		return ip;
+	}
+	
+	public int getPort() {
+		return port;
+	}
 
-	public boolean isRunning() {
-		return running;
+	public void setBacklogSize(int backlogSize) {
+		if(this.isRunning())
+			throw new IllegalStateException("Cannot change the server backlogSize as the server is already running");
+		this.backlogSize = backlogSize;
+	}
+
+	public void setMinimumPoolSize(int minimumPoolSize) {
+		if(this.isRunning())
+			throw new IllegalStateException("Cannot change the server minimumPoolSize as the server is already running");
+		this.minimumPoolSize = minimumPoolSize;
+	}
+
+	public void setMaximumPoolSize(int maximumPoolSize) {
+		if(this.isRunning())
+			throw new IllegalStateException("Cannot change the server maximumPoolSize as the server is already running");
+		this.maximumPoolSize = maximumPoolSize;
+	}
+
+	public void setPoolThreadAliveTime(long poolThreadAliveTime) {
+		if(this.isRunning())
+			throw new IllegalStateException("Cannot change the server poolThreadAliveTime as the server is already running");
+		this.poolThreadAliveTime = poolThreadAliveTime;
 	}
 
 	public void setIp(InetAddress ip) {
+		if(this.isRunning())
+			throw new IllegalStateException("Cannot change the server ip as the server is already running");
 		this.ip = ip;
 	}
-
+	
 	public void setPort(int port) {
+		if(this.isRunning())
+			throw new IllegalStateException("Cannot change the server port as the server is already running");
 		this.port = port;
 	}
 
