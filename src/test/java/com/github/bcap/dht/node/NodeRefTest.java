@@ -4,16 +4,19 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.math.BigInteger;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 import org.junit.Test;
 
 public class NodeRefTest {
 
 	@Test
-	public void testEquals() {
+	public void testEquals() throws UnknownHostException {
 		
-		int[] ip1 = new int[]{200, 200, 200, 200};
-		int[] ip2 = new int[]{192, 168, 1, 1};
+		InetAddress ip1 = Inet4Address.getByName("127.0.0.1");
+		InetAddress ip2 = Inet4Address.getByName("192.168.1.1");
 		int port = 5000;
 		
 		Contact node1 = new Contact(new BigInteger("101000", 2), ip1, port);

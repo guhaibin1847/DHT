@@ -1,10 +1,13 @@
 package com.github.bcap.dht.message;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import com.github.bcap.dht.node.Contact;
 
-public abstract class Message {
+public abstract class Message implements Serializable {
+
+	protected static final long serialVersionUID = 1L;
 
 	private static long CONVERSATION_COUNTER = 0;
 

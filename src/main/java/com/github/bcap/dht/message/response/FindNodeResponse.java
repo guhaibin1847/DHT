@@ -6,7 +6,7 @@ import com.github.bcap.dht.message.request.FindNodeRequest;
 
 public class FindNodeResponse extends Response implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = Response.serialVersionUID + 1L;
 
 	public FindNodeResponse(FindNodeRequest request) {
 		super(request);

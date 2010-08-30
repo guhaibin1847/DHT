@@ -6,7 +6,7 @@ import com.github.bcap.dht.message.request.StoreRequest;
 
 public class StoreResponse extends Response implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = Response.serialVersionUID + 1L;
 
 	public StoreResponse(StoreRequest request) {
 		super(request);

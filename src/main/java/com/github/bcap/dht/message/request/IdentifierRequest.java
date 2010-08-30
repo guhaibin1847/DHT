@@ -1,8 +1,12 @@
 package com.github.bcap.dht.message.request;
 
+import java.io.Serializable;
+
 import com.github.bcap.dht.node.Identifier;
 
-public abstract class IdentifierRequest extends Request {
+public abstract class IdentifierRequest extends Request implements Serializable {
+
+	protected static final long serialVersionUID = Request.serialVersionUID + 1L;
 
 	private Identifier identifier;
 

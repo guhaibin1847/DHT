@@ -1,10 +1,14 @@
 package com.github.bcap.dht.message.response;
 
+import java.io.Serializable;
+
 import com.github.bcap.dht.message.Message;
 import com.github.bcap.dht.message.request.Request;
 
-public abstract class Response extends Message {
+public abstract class Response extends Message implements Serializable{
 	
+	protected static final long serialVersionUID = Message.serialVersionUID + 1L;
+
 	public enum Status {
 		OK,
 		TIMEOUT
