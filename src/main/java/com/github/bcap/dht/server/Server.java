@@ -16,6 +16,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 
@@ -31,6 +34,8 @@ public class Server extends Thread implements Runnable {
 
 	private static final Logger logger = Logger.getLogger(Server.class);
 
+	public static final int DEFAULT_BACKLOG_SIZE = 20;
+
 	private static int SERVER_COUNTER = 0;
 	
 	private Map<Class<? extends Request>, RequestHandler> handlers;
@@ -38,34 +43,48 @@ public class Server extends Thread implements Runnable {
 	
 	private InetAddress ip;
 	private int port;
+	private int backlogSize;
 
 	private ServerSocket serverSocket;
-	private ExecutorService workerThreadPool;
+	private ThreadPoolExecutor workerThreadPool;
 
 	private boolean hasToRun = true;
+	private boolean running = false;
+
 	
 	public Server(InetAddress ip, int port) {
+		this(ip, port, DEFAULT_BACKLOG_SIZE);
+	}
+	
+	public Server(InetAddress ip, int port, int backlogSize) {
 		this.ip = ip;
 		this.port = port;
+		this.backlogSize = backlogSize;
 		this.handlers = new ConcurrentHashMap<Class<? extends Request>, RequestHandler>();
 		this.nodes = new ConcurrentHashMap<Identifier, Node>();
-		this.setName("Server " + SERVER_COUNTER++);
+		this.setName("Server-" + SERVER_COUNTER++);
 	}
 
 	@Override
 	public void run() {
-		logger.debug("Creating Handler thread pool");
-		workerThreadPool = Executors.newCachedThreadPool();
+		running = true;
+
+		logger.info("Starting server on adddress " + ip + ":" + port);
+		
+		addShutdownHook();
+		
+		createWorkerPool();
 
 		try {
-			logger.info("Starting server on adddress " + ip + ":" + port);
-			serverSocket = new ServerSocket(port, 50, ip);
+			logger.debug("Opening socket on address " + ip + ":" + port + " with a message backlog of size " + backlogSize);
+			serverSocket = new ServerSocket(port, backlogSize, ip);
 		
 			while(hasToRun) {
 				try {
 					Socket socket = serverSocket.accept();
-					logger.debug("Incoming connection from " + socket.getInetAddress() + ":" + socket.getPort());
+					logger.info("Incoming connection from " + socket.getInetAddress() + ":" + socket.getPort());
 					Worker worker = new Worker(this.handlers, this.nodes, socket);
+					logger.debug("Submiting request to a new worker in the pool (active/size: " + workerThreadPool.getActiveCount() + "/" + workerThreadPool.getPoolSize() + ")");
 					this.workerThreadPool.submit(worker);
 				} catch (IOException e) {
 					//when the server is shutting down a SocketException is generated as the socket is closed
@@ -77,6 +96,8 @@ public class Server extends Thread implements Runnable {
 		} catch (IOException e) {
 			logger.fatal("Could not create main server socket!", e);
 		}
+		
+		running = false;
 	}
 	
 	class Worker implements Runnable {
@@ -189,15 +210,33 @@ public class Server extends Thread implements Runnable {
 	}
 
 	public void shutdown() {
-		logger.info("Shutting down server " + this.getName());
-		this.hasToRun = false;
-		if(this.serverSocket != null) {
-			try {
-				this.serverSocket.close();
-			} catch (IOException e) {
-				logger.error("IOException while trying to close the server main socket", e);
+		if(running) {
+			logger.info("Shutting down server " + this.getName());
+			this.hasToRun = false;
+			if(this.serverSocket != null) {
+				try {
+					this.serverSocket.close();
+				} catch (IOException e) {
+					logger.error("IOException while trying to close the server main socket", e);
+				}
 			}
+			logger.debug("Server " + this.getName() + " successfully shutted down");
 		}
+	}
+	
+	private void addShutdownHook() {
+		logger.debug("Adding server shutdown hook");
+		final Server thisRef = this;
+		Runtime.getRuntime().addShutdownHook(new Thread() {
+			public void run() {
+				thisRef.shutdown();
+			}
+		});
+	}
+	
+	private void createWorkerPool() {
+		logger.debug("Creating Handler thread pool");
+		workerThreadPool = new ThreadPoolExecutor(1, 50, 60L, TimeUnit.SECONDS, new SynchronousQueue<Runnable>());
 	}
 	
 	public <T extends Request> void addHandler(Class<T> requestClass, RequestHandler<T, ? extends Response> handler) {
