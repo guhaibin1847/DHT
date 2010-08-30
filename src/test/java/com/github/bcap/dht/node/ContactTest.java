@@ -1,12 +1,19 @@
 package com.github.bcap.dht.node;
 
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.math.BigInteger;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Random;
 
 import org.junit.Test;
 
@@ -37,5 +44,27 @@ public class ContactTest {
 		
 		assertFalse(node1.equals(null));
 		assertFalse(node1.equals(new Object()));
+	}
+	
+	@Test
+	public void testContactSerialization() throws Exception {
+		BigInteger id = new BigInteger("888888888");
+		InetAddress ip = Inet4Address.getByName("127.0.0.1");
+		Integer port = 5000;
+		
+		Contact contact = new Contact(id, ip, port);
+		
+		ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
+		
+		ObjectOutputStream out = new ObjectOutputStream(byteOut);
+		out.writeObject(contact);
+		out.close();
+		
+		ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(byteOut.toByteArray()));
+		Object readedObj = in.readObject();
+		in.close();
+		
+		Contact readedContact = (Contact) readedObj;
+		assertEquals(contact, readedContact);
 	}
 }
