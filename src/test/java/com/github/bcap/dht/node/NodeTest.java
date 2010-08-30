@@ -1,8 +1,17 @@
 package com.github.bcap.dht.node;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.math.BigInteger;
+import java.net.Inet4Address;
+import java.util.Random;
 
 import org.junit.Test;
 
@@ -70,5 +79,32 @@ public class NodeTest {
 			assertNotNull(bucket);
 			assertEquals(buckets[i], bucket.getValue());
 		}
+	}
+	
+	@Test
+	public void testNodeSerialization() throws Exception {
+		Identifier key = new Identifier(BigInteger.ONE);
+		byte[] data = "polaco".getBytes();
+		int bucketIndex = 3;
+		Contact contact = new Contact(BigInteger.ONE, Inet4Address.getByName("127.0.0.1"), 5000);
+
+		Node node = new Node(new BigInteger(Identifier.LENGTH, new Random()));
+		node.getDataStorage().put(key, data);
+		node.getBucket(bucketIndex).addContact(contact);
+		
+		ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
+		
+		ObjectOutputStream out = new ObjectOutputStream(byteOut);
+		out.writeObject(node);
+		out.close();
+		
+		ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(byteOut.toByteArray()));
+		Object readedObj = in.readObject();
+		in.close();
+		
+		Node readedNode = (Node) readedObj;
+		assertEquals(node, readedNode);
+		assertArrayEquals(data, readedNode.getDataStorage().get(key));
+		assertEquals(contact, readedNode.getBucket(bucketIndex).iterator().next());
 	}
 }
