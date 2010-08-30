@@ -5,9 +5,11 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
@@ -25,11 +27,14 @@ public class Server extends Thread implements Runnable {
 
 	private static final Logger logger = Logger.getLogger(Server.class);
 
+	private static int SERVER_COUNTER = 0;
+	
 	private Map<Class<? extends Request>, RequestHandler> handlers;
 
 	private InetAddress ip;
 	private int port;
 
+	private ServerSocket serverSocket;
 	private ExecutorService workerThreadPool;
 
 	private boolean hasToRun = true;
@@ -38,6 +43,7 @@ public class Server extends Thread implements Runnable {
 		this.ip = ip;
 		this.port = port;
 		this.handlers = new ConcurrentHashMap<Class<? extends Request>, RequestHandler>();
+		this.setName("Server " + SERVER_COUNTER++);
 	}
 
 	public <T extends Request> void addHandler(Class<T> requestClass, RequestHandler<T, ? extends Response> handler) {
@@ -56,20 +62,21 @@ public class Server extends Thread implements Runnable {
 	public void run() {
 		logger.debug("Creating Handler thread pool");
 		workerThreadPool = Executors.newCachedThreadPool();
-		logger.info("Starting server on adddress " + ip + ":" + port);
 
-		ServerSocket serverSocket = null;
-		
 		try {
+			logger.info("Starting server on adddress " + ip + ":" + port);
 			serverSocket = new ServerSocket(port, 50, ip);
 		
 			while(hasToRun) {
 				try {
 					Socket socket = serverSocket.accept();
+					logger.debug("Incoming connection from " + socket.getInetAddress() + ":" + socket.getPort());
 					Worker worker = new Worker(this.handlers, socket);
 					this.workerThreadPool.submit(worker);
 				} catch (IOException e) {
-					logger.error("IOException occured while trying to accept new connections", e);
+					//when the server is shutting down a SocketException is generated as the socket is closed
+					if(!(e instanceof SocketException && e.getMessage().equals("Socket closed") && !hasToRun))
+						logger.error("IOException occured while trying to accept new connections", e);
 				}
 			}
 		
@@ -85,7 +92,23 @@ public class Server extends Thread implements Runnable {
 	public int getPort() {
 		return port;
 	}
-
+	
+	public void shutdown() {
+		logger.info("Shutting down server " + this.getName());
+		this.hasToRun = false;
+		if(this.serverSocket != null) {
+			try {
+				this.serverSocket.close();
+			} catch (IOException e) {
+				logger.error("IOException while trying to close the server main socket", e);
+			}
+		}
+	}
+	
+	public static void main(String[] args) throws Exception {
+		Server server = new Server(Inet4Address.getByName("localhost"), 50000);
+		server.start();
+	}
 }
 
 class Worker implements Runnable {
