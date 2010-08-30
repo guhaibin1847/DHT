@@ -42,11 +42,7 @@ public class Bucket extends Identifier implements Serializable, Iterable<Contact
 	}
 
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
 		if (!super.equals(obj))
-			return false;
-		if (getClass() != obj.getClass())
 			return false;
 		Bucket that = (Bucket) obj;
 		if (contacts == null) {
