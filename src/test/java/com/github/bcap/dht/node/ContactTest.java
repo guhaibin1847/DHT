@@ -10,7 +10,7 @@ import java.net.UnknownHostException;
 
 import org.junit.Test;
 
-public class NodeRefTest {
+public class ContactTest {
 
 	@Test
 	public void testEquals() throws UnknownHostException {
