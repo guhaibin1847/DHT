@@ -34,6 +34,21 @@
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.dstovall</groupId>
+				<artifactId>onejar-maven-plugin</artifactId>
+				<version>1.4.3</version>
+				<executions>
+					<execution>
+						<configuration>
+							<onejarVersion>0.97</onejarVersion>
+						</configuration>
+						<goals>
+							<goal>one-jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 
@@ -158,10 +173,15 @@
 			<id>snapshots.repository.codehaus.org</id>
 			<url>http://snapshots.repository.codehaus.org</url>
 		</pluginRepository>
-		
+
 		<pluginRepository>
 			<id>maven2-repository.dev.java.net</id>
 			<url>http://download.java.net/maven/2/</url>
+		</pluginRepository>
+
+		<pluginRepository>
+			<id>onejar-maven-plugin.googlecode.com</id>
+			<url>http://onejar-maven-plugin.googlecode.com/svn/mavenrepo</url>
 		</pluginRepository>
 	</pluginRepositories>
 
