@@ -143,45 +143,15 @@
 
 	<repositories>
 		<repository>
-			<id>java.net</id>
-			<url>http://download.java.net/maven/2</url>
-		</repository>
-
-		<repository>
-			<id>jboss</id>
-			<url>http://repository.jboss.com/maven2</url>
-		</repository>
-
-		<repository>
-			<id>codehaus</id>
-			<url>http://repository.codehaus.org</url>
-		</repository>
-
-		<repository>
-			<id>spring</id>
-			<url>http://maven.springframework.org/release</url>
-		</repository>
-
-		<repository>
-			<id>ibiblio</id>
-			<url>http://mirrors.ibiblio.org/pub/mirrors/maven2</url>
+			<id>repo.bcap.me</id>
+			<url>http://repo.bcap.me/libs</url>
 		</repository>
 	</repositories>
 
 	<pluginRepositories>
 		<pluginRepository>
-			<id>snapshots.repository.codehaus.org</id>
-			<url>http://snapshots.repository.codehaus.org</url>
-		</pluginRepository>
-
-		<pluginRepository>
-			<id>maven2-repository.dev.java.net</id>
-			<url>http://download.java.net/maven/2/</url>
-		</pluginRepository>
-
-		<pluginRepository>
-			<id>onejar-maven-plugin.googlecode.com</id>
-			<url>http://onejar-maven-plugin.googlecode.com/svn/mavenrepo</url>
+			<id>repo.bcap.me</id>
+			<url>http://repo.bcap.me/plugins</url>
 		</pluginRepository>
 	</pluginRepositories>
 
