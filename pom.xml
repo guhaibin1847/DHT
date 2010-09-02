@@ -154,5 +154,16 @@
 			<url>http://repo.bcap.me/plugins</url>
 		</pluginRepository>
 	</pluginRepositories>
+	
+	<distributionManagement>
+		<snapshotRepository>
+			<id>repo.bcap.me</id>
+			<url>https://repo.bcap.me/libs-snapshots-local</url>
+		</snapshotRepository>
+		<repository>
+			<id>repo.bcap.me</id>
+			<url>https://repo.bcap.me/libs-releases-local</url>
+		</repository>
+	</distributionManagement>
 
 </project>
