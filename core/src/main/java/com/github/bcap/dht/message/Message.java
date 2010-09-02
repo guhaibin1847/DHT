@@ -15,7 +15,7 @@ public abstract class Message implements Serializable {
 	private Contact destination;
 	private long conversationId;
 	private transient Date issuedDate;
-
+	
 	public Contact getSource() {
 		return source;
 	}
