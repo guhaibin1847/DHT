@@ -9,19 +9,7 @@
 
 	<modules>
 		<module>core</module>
-		<module>a</module>
-		<module>a</module>
 	</modules>
-
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>com.github.bcap.dht</groupId>
-				<artifactId>dht</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 
 	<developers>
 		<developer>
