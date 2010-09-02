@@ -5,8 +5,10 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.math.BigInteger;
 import java.net.Inet4Address;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
@@ -21,13 +23,22 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 
+import com.github.bcap.dht.message.request.FindNodeRequest;
+import com.github.bcap.dht.message.request.FindValueRequest;
+import com.github.bcap.dht.message.request.PingRequest;
 import com.github.bcap.dht.message.request.Request;
+import com.github.bcap.dht.message.request.StoreRequest;
+import com.github.bcap.dht.message.response.PingResponse;
 import com.github.bcap.dht.message.response.Response;
 import com.github.bcap.dht.node.Contact;
 import com.github.bcap.dht.node.Identifier;
 import com.github.bcap.dht.node.Node;
+import com.github.bcap.dht.server.handler.FindNodeRequestHandler;
+import com.github.bcap.dht.server.handler.FindValueRequestHandler;
+import com.github.bcap.dht.server.handler.PingRequestHandler;
 import com.github.bcap.dht.server.handler.RequestHandler;
 import com.github.bcap.dht.server.handler.RequestHandlerException;
+import com.github.bcap.dht.server.handler.StoreRequestHandler;
 
 public class Server extends Thread implements Runnable {
 
@@ -49,6 +60,8 @@ public class Server extends Thread implements Runnable {
 	private int minimumPoolSize;
 	private int maximumPoolSize;
 	private long poolThreadAliveTime;
+	
+	private Server serverRef = this;
 
 	private ServerSocket serverSocket;
 	private ThreadPoolExecutor workerThreadPool;
@@ -95,7 +108,7 @@ public class Server extends Thread implements Runnable {
 				try {
 					Socket socket = serverSocket.accept();
 					logger.info("Incoming connection from " + socket.getInetAddress() + ":" + socket.getPort());
-					Worker worker = new Worker(this.handlers, this.nodes, socket);
+					Worker worker = new Worker(socket);
 					logger.debug("Submiting request to a new worker in the pool (active/size: " + workerThreadPool.getActiveCount() + "/" + workerThreadPool.getPoolSize() + ")");
 					this.workerThreadPool.submit(worker);
 				} catch (IOException e) {
@@ -114,13 +127,9 @@ public class Server extends Thread implements Runnable {
 
 	class Worker implements Runnable {
 
-		private Map<Class<? extends Request>, RequestHandler> handlersMap;
-		private Map<Identifier, Node> nodesMap;
 		private Socket socket;
 
-		public Worker(Map<Class<? extends Request>, RequestHandler> handlersMap, Map<Identifier, Node> nodesMap, Socket socket) {
-			this.handlersMap = handlersMap;
-			this.nodesMap = nodesMap;
+		public Worker(Socket socket) {
 			this.socket = socket;
 		}
 
@@ -160,18 +169,13 @@ public class Server extends Thread implements Runnable {
 
 					logger.debug("Received request: " + request);
 
-					Contact contact = request.getDestination();
-					Node node = nodes.get(contact.asIdentifier());
-					if (node == null)
-						throw new IllegalArgumentException("Received request is intended for a node with id " + contact.asIdentifier() + " that is not managed by this server");
-
-					RequestHandler handler = handlersMap.get(request.getClass());
+					RequestHandler handler = handlers.get(request.getClass());
 					if (handler == null)
 						throw new IllegalArgumentException("Received request cannot be handled by this server as no handler was found for type " + request.getClass());
 
 					try {
 						try {
-							Response response = handler.handle(node, request);
+							Response response = handler.handle(serverRef, request);
 							logger.debug("Writing the response object back to the client: " + response);
 							outStream.writeObject(response);
 						} catch (RequestHandlerException e) {
@@ -246,6 +250,13 @@ public class Server extends Thread implements Runnable {
 		});
 	}
 	
+	public void addDefaultHandlers() {
+		this.handlers.put(PingRequest.class, new PingRequestHandler());
+		this.handlers.put(StoreRequest.class, new StoreRequestHandler());
+		this.handlers.put(FindNodeRequest.class, new FindNodeRequestHandler());
+		this.handlers.put(FindValueRequest.class, new FindValueRequestHandler());
+	}
+	
 	public boolean isRunning() {
 		return running;
 	}
@@ -273,6 +284,10 @@ public class Server extends Thread implements Runnable {
 
 	public Node removeNode(Node node) {
 		return this.nodes.remove(node.asIdentifier());
+	}
+	
+	public Node getNode(Identifier id) {
+		return this.nodes.get(id.asIdentifier());
 	}
 
 	public Collection<Node> getNodes() {
@@ -344,8 +359,36 @@ public class Server extends Thread implements Runnable {
 	}
 
 	public static void main(String[] args) throws Exception {
+		BigInteger nodeId = BigInteger.ONE.shiftLeft(2);
+		Node node = new Node(nodeId);
+		
 		Server server = new Server(50000);
+		server.addDefaultHandlers();
+		server.addNode(node);
 		server.start();
+		
+		Thread.sleep(50);
+		
+		BigInteger clientId = BigInteger.ONE.shiftLeft(3);
+		Contact source = new Contact(clientId, InetAddress.getByName("localhost"), 50001);
+		Contact destination = new Contact(nodeId, InetAddress.getByName("localhost"), 50000);
+		
+		Socket socket = new Socket();
+		socket.connect(new InetSocketAddress(destination.getIp(), destination.getPort()));
+		
+		PingRequest request = new PingRequest();
+		request.setSource(source);
+		request.setDestination(destination);
+		
+		ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+		out.writeObject(request);
+		
+		ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+		PingResponse response = (PingResponse) in.readObject();
+		System.out.println(response);
+
+		out.close();
+		in.close();
 	}
 
 }
