@@ -22,6 +22,11 @@ public class Node extends Identifier implements Serializable {
 		init();
 	}
 	
+	public boolean updateContact(Contact contact) {
+		Bucket bucket = getBucketForId(contact);
+		return bucket.updateContact(contact);
+	}
+	
 	public int getBucketIndex(Identifier id) {
 		int index = id.getValue().bitLength();
 		if(index > 0)
