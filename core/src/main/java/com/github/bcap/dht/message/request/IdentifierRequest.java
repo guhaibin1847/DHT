@@ -10,6 +10,10 @@ public abstract class IdentifierRequest extends Request implements Serializable 
 
 	private Identifier identifier;
 
+	public IdentifierRequest() {
+		super();
+	}
+	
 	public Identifier getIdentifier() {
 		return identifier;
 	}

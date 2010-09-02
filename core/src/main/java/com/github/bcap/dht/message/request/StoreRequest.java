@@ -8,6 +8,10 @@ public class StoreRequest extends IdentifierRequest implements Serializable {
 
 	private byte[] data;
 
+	public StoreRequest() {
+		super();
+	}
+	
 	public byte[] getData() {
 		return data;
 	}
