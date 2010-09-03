@@ -266,11 +266,11 @@ public class Server extends Thread implements Runnable {
 		workerThreadPool = new ThreadPoolExecutor(minimumPoolSize, maximumPoolSize, poolThreadAliveTime, TimeUnit.MILLISECONDS, new SynchronousQueue<Runnable>());
 	}
 
-	public <T extends Request> void addHandler(Class<T> requestClass, RequestHandler<T, ? extends Response> handler) {
+	public void addHandler(Class<? extends Request> requestClass, RequestHandler handler) {
 		this.handlers.put(requestClass, handler);
 	}
 
-	public <T extends Request> RequestHandler<T, ? extends Response> removeHandler(Class<T> requestClass) {
+	public RequestHandler removeHandler(Class<? extends Request> requestClass) {
 		return this.handlers.remove(requestClass);
 	}
 
