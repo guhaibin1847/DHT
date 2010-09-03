@@ -90,7 +90,7 @@ public class NodeTest {
 
 		Node node = new Node(new BigInteger(Identifier.LENGTH, new Random()));
 		node.getDataStorage().put(key, data);
-		node.getBucket(bucketIndex).addContact(contact);
+		node.getBucket(bucketIndex).updateContact(contact);
 		
 		ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
 		
