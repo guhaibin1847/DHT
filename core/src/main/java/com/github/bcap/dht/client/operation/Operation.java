@@ -3,7 +3,6 @@ package com.github.bcap.dht.client.operation;
 import com.github.bcap.dht.client.MessageSender;
 import com.github.bcap.dht.client.ResponseHandler;
 import com.github.bcap.dht.message.request.Request;
-import com.github.bcap.dht.message.response.Response;
 
 public abstract class Operation implements ResponseHandler {
 
