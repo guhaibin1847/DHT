@@ -1,12 +1,11 @@
 package com.github.bcap.dht.client.operation;
 
-import com.github.bcap.dht.message.request.FindValueRequest;
-import com.github.bcap.dht.message.response.FindValueResponse;
+import com.github.bcap.dht.message.response.Response;
 
-public class FindValue extends Operation<FindValueRequest, FindValueResponse> {
+public class FindValue extends Operation {
 
 	@Override
-	public void handleResponse(FindValueResponse response) {
+	public void handleResponse(Response response) {
 		// TODO Auto-generated method stub
 		
 	}

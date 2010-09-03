@@ -1,12 +1,11 @@
 package com.github.bcap.dht.client.operation;
 
-import com.github.bcap.dht.message.request.StoreRequest;
-import com.github.bcap.dht.message.response.StoreResponse;
+import com.github.bcap.dht.message.response.Response;
 
-public class Store extends Operation<StoreRequest, StoreResponse> {
+public class Store extends Operation {
 
 	@Override
-	public void handleResponse(StoreResponse response) {
+	public void handleResponse(Response response) {
 		// TODO Auto-generated method stub
 		
 	}
