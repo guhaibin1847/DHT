@@ -2,7 +2,7 @@ package com.github.bcap.dht.message.response;
 
 import java.io.Serializable;
 
-public class FindValueResponse extends FindNodeResponse implements Serializable {
+public class FindValueResponse extends Response implements Serializable {
 
 	protected static final long serialVersionUID = FindNodeResponse.serialVersionUID + 1L;
 
