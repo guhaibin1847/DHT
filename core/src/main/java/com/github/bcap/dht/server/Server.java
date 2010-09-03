@@ -16,6 +16,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -263,7 +264,7 @@ public class Server extends Thread implements Runnable {
 
 	private void createWorkerThreadPool() {
 		logger.debug("Creating a worker thread pool with size ranging from " + minimumPoolSize + " to " + maximumPoolSize + " and with a thread alive timeout of " + poolThreadAliveTime + "ms");
-		workerThreadPool = new ThreadPoolExecutor(minimumPoolSize, maximumPoolSize, poolThreadAliveTime, TimeUnit.MILLISECONDS, new SynchronousQueue<Runnable>());
+		workerThreadPool = new ThreadPoolExecutor(minimumPoolSize, maximumPoolSize, poolThreadAliveTime, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(10));
 	}
 
 	public void addHandler(Class<? extends Request> requestClass, RequestHandler handler) {
