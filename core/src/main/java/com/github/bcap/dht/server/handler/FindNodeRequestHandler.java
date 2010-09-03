@@ -18,6 +18,9 @@ public class FindNodeRequestHandler extends RequestHandler {
 		IdentifierRequest idReq = (IdentifierRequest) request;
 		int nodeIndex = node.getBucketIndex(node);
 		int bucketIndex = node.getBucketIndex(idReq.getIdentifier());
+		//Direction tells us the direction where to move to get closer to the node itself
+		//Eventually if the buckets are not full the window will keep moving an getting nodes
+		//from another buckets, warping aroung the edges of the buckets array
 		int direction = nodeIndex > bucketIndex ? 1 : -1;
 		
 		FindNodeResponse response = new FindNodeResponse();
