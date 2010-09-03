@@ -23,8 +23,6 @@ public class FindNodeRequestHandler extends RequestHandler {
 		//from another buckets, warping aroung the edges of the buckets array
 		int direction = nodeIndex > bucketIndex ? 1 : -1;
 		
-		FindNodeResponse response = new FindNodeResponse();
-		
 		List<Contact> contacts = new ArrayList<Contact>();
 		
 		for(int visitedBuckets = 0; contacts.size() < Bucket.MAX_SIZE && visitedBuckets < Identifier.LENGTH; visitedBuckets++) {
@@ -33,8 +31,8 @@ public class FindNodeRequestHandler extends RequestHandler {
 			bucketIndex = circularMod(bucketIndex + direction, Identifier.LENGTH);
 		}
 		
+		FindNodeResponse response = new FindNodeResponse();
 		response.setContacts(contacts);
-		
 		return response;
 	}
 	
