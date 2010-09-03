@@ -6,10 +6,8 @@ import com.github.bcap.dht.node.Node;
 
 public class PingRequestHandler extends RequestHandler<PingRequest, PingResponse>{
 
-	@Override
 	public PingResponse handleImpl(Node node, PingRequest request) {
-		// TODO Auto-generated method stub
-		return null;
+		return new PingResponse();
 	}
 
 }
