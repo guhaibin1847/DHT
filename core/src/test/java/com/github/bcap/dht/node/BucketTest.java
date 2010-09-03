@@ -1,8 +1,6 @@
 package com.github.bcap.dht.node;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import java.math.BigInteger;
 import java.net.Inet4Address;
@@ -28,20 +26,52 @@ public class BucketTest {
 	}
 	
 	@Test
-	public void testAddNode() {
+	public void testUpdateContactAdd() {
 		assertEquals(0, bucket.size());
 
 		for(int i = 1; i <= Bucket.MAX_SIZE; i++) {
-			bucket.addContact(createContact(i));
+			assertTrue(bucket.updateContact(createContact(i)));
 			assertEquals(i, bucket.size());
 		}
 		
-		try {
-			bucket.addContact(createContact(1000));
-			fail("bucket addition should fail");
-		} catch (IllegalStateException e) {
-			assertEquals(Bucket.MAX_SIZE, bucket.size());
-		}
+		assertFalse(bucket.updateContact(createContact(1000)));
+		assertEquals(Bucket.MAX_SIZE, bucket.size());
+	}
+	
+	@Test
+	public void testUpdateContactUpdate() {
+		Contact contact = createContact(5);
+
+		assertEquals(0, bucket.size());
+		
+		assertTrue(bucket.updateContact(contact));
+		assertEquals(1, bucket.size());
+		
+		assertTrue(bucket.updateContact(contact));;
+		assertEquals(1, bucket.size());
+		
+		contact.setPort(port + 1);
+		
+		assertTrue(bucket.updateContact(contact));;
+		assertEquals(1, bucket.size());
+		
+		Contact newContact = new Contact(contact.getValue(), contact.getIp(), contact.getPort());
+		assertTrue(bucket.updateContact(newContact));
+		assertEquals(1, bucket.size());
+	}
+	
+	@Test 
+	public void testGetContact() {
+		Contact contact = createContact(5);
+		bucket.updateContact(contact);
+		
+		assertEquals(contact, bucket.getContact(contact));
+		assertEquals(contact, bucket.getContact(contact.asIdentifier()));
+		assertEquals(contact, bucket.getContact(new Identifier(contact.getValue())));
+		assertEquals(contact, bucket.getContact(new Contact(contact.getValue(), ip, port + 1)));
+		assertEquals(contact, bucket.getContact(new Node(contact.getValue())));
+		
+		assertNull(bucket.getContact(new Identifier(contact.getValue().shiftLeft(1))));
 	}
 	
 	@Test
@@ -49,7 +79,7 @@ public class BucketTest {
 		assertFalse(bucket.iterator().hasNext());
 
 		for(int i = 1; i <= Bucket.MAX_SIZE; i++) {
-			bucket.addContact(createContact(i));
+			bucket.updateContact(createContact(i));
 			int iterated = 0;
 			for (Contact iteratedNode : bucket)
 				iterated++;
@@ -58,7 +88,7 @@ public class BucketTest {
 	}
 	
 	private Contact createContact(int i) {
-		Contact contact = new Contact(node.getValue().shiftLeft(1), ip, port);
+		Contact contact = new Contact(node.getValue().shiftLeft(i), ip, port);
 		Date date = new Date();
 		date.setTime(i);
 		contact.setLastAliveDate(date);
