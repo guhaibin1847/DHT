@@ -105,6 +105,6 @@ public class NodeTest {
 		Node readedNode = (Node) readedObj;
 		assertEquals(node, readedNode);
 		assertArrayEquals(data, readedNode.getDataStorage().get(key));
-		assertEquals(contact, readedNode.getBucket(bucketIndex).iterator().next());
+		assertEquals(contact, readedNode.getBucket(bucketIndex).getContacts().iterator().next());
 	}
 }

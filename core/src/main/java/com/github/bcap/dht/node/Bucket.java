@@ -2,11 +2,12 @@ package com.github.bcap.dht.node;
 
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
-public class Bucket extends Identifier implements Serializable, Iterable<Contact> {
+public class Bucket extends Identifier implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -42,8 +43,8 @@ public class Bucket extends Identifier implements Serializable, Iterable<Contact
 	public Contact getContact(Identifier id) {
 		return contacts.get(id.asIdentifier());
 	}
-
-	public Iterator<Contact> iterator() {
-		return contacts.values().iterator();
+	
+	public Collection<Contact> getContacts() {
+		return new ArrayList<Contact>(contacts.values());
 	}
 }

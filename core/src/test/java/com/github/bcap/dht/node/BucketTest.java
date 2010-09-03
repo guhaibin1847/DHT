@@ -74,19 +74,6 @@ public class BucketTest {
 		assertNull(bucket.getContact(new Identifier(contact.getValue().shiftLeft(1))));
 	}
 	
-	@Test
-	public void testBucketIteration() {
-		assertFalse(bucket.iterator().hasNext());
-
-		for(int i = 1; i <= Bucket.MAX_SIZE; i++) {
-			bucket.updateContact(createContact(i));
-			int iterated = 0;
-			for (Contact iteratedNode : bucket)
-				iterated++;
-			assertEquals(i, iterated);
-		}
-	}
-	
 	private Contact createContact(int i) {
 		Contact contact = new Contact(node.getValue().shiftLeft(i), ip, port);
 		Date date = new Date();
