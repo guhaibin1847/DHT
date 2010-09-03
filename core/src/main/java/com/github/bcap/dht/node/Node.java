@@ -42,6 +42,13 @@ public class Node extends Identifier implements Serializable {
 		return getBucket(getBucketIndex(id));
 	}
 	
+	public int countContacts() {
+		int count = 0;
+		for (int i = 0; i < buckets.length; i++)
+			count += buckets[i].size();
+		return count;
+	}
+	
 	private void init() {
 		createBuckets();
 		createDataStorage();

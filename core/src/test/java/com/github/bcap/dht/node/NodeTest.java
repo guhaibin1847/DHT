@@ -11,6 +11,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.math.BigInteger;
 import java.net.Inet4Address;
+import java.net.InetAddress;
 import java.util.Random;
 
 import org.junit.Test;
@@ -106,5 +107,35 @@ public class NodeTest {
 		assertEquals(node, readedNode);
 		assertArrayEquals(data, readedNode.getDataStorage().get(key));
 		assertEquals(contact, readedNode.getBucket(bucketIndex).getContacts().iterator().next());
+	}
+	
+	@Test
+	public void testContactAddition() throws Exception {
+		Node node = new Node(BigInteger.ZERO);
+		
+		InetAddress ip = InetAddress.getLocalHost();
+		int port = 5000;
+		
+		Contact[] contacts = new Contact[] {
+			new Contact(new BigInteger("000000", 2), ip, port),
+			new Contact(new BigInteger("000001", 2), ip, port),
+			new Contact(new BigInteger("000010", 2), ip, port),
+			new Contact(new BigInteger("000011", 2), ip, port),
+			new Contact(new BigInteger("000101", 2), ip, port),
+			new Contact(new BigInteger("101000", 2), ip, port)
+		};
+		
+		for (int i = 0; i < contacts.length; i++)
+			node.updateContact(contacts[i]);
+		
+		assertEquals(2, node.getBucket(0).getContacts().size());
+		assertEquals(2, node.getBucket(1).getContacts().size());
+		assertEquals(1, node.getBucket(2).getContacts().size());
+		assertEquals(1, node.getBucket(5).getContacts().size());
+		assertEquals(contacts.length, node.countContacts());
+		
+		node.updateContact(new Contact(new BigInteger("000001", 2), ip, port + 1));
+		assertEquals(2, node.getBucket(0).getContacts().size());
+		assertEquals(contacts.length, node.countContacts());
 	}
 }
