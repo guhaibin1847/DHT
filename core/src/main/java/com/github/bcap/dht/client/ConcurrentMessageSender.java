@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -23,19 +24,27 @@ public class ConcurrentMessageSender implements MessageSender {
 	private ThreadPoolExecutor workerThreadPool;
 	private LinkedBlockingDeque<Runnable> workerQueue;
 	
+	private ConcurrentMessageSender thisRef = this;
+	
 	public ConcurrentMessageSender(int maxConcurrentMessages) {
 		this.workerQueue = new LinkedBlockingDeque<Runnable>();
 		this.workerThreadPool = new ThreadPoolExecutor(1, maxConcurrentMessages, 30, TimeUnit.SECONDS, workerQueue);
 
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			public void run() {
-				workerThreadPool.shutdown();
+				thisRef.shutdown();
 			}
 		});
 	}
 	
+	public void shutdown() {
+		workerThreadPool.shutdown();
+	}
+
 	public void send(Request request, ResponseHandler handler) {
-		
+		logger.debug("Adding request " + request + " to the queue");
+		this.workerThreadPool.execute(new Worker(request, handler));
+		logger.debug("Request " + request + " added to the queue");
 	}
 	
 	class Worker implements Runnable {
@@ -56,6 +65,8 @@ public class ConcurrentMessageSender implements MessageSender {
 			Socket socket = new Socket();
 			
 			try {
+				socket.connect(new InetSocketAddress(destination.getIp(), destination.getPort()));
+			
 				try {
 					outStream = new ObjectOutputStream(socket.getOutputStream());
 				} catch (IOException e) {
