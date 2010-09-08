@@ -236,6 +236,7 @@ public class Server extends Thread implements Runnable {
 					logger.error("IOException while trying to close the server main socket", e);
 				}
 			}
+			workerThreadPool.shutdown();
 			logger.debug("Server " + this.getName() + " successfully shutted down");
 		}
 	}
