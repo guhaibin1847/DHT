@@ -1,6 +1,7 @@
 package com.github.bcap.dht.message.response;
 
 import java.io.Serializable;
+import java.util.SortedMap;
 
 public class FindValueResponse extends Response implements Serializable {
 
@@ -18,5 +19,10 @@ public class FindValueResponse extends Response implements Serializable {
 
 	public void setData(byte[] data) {
 		this.data = data;
+	}
+	
+	public void addToStringProperties(SortedMap<String, Object> propertiesMap) {
+		super.addToStringProperties(propertiesMap);
+		propertiesMap.put("data.length", data != null ? data.length : "null");
 	}
 }

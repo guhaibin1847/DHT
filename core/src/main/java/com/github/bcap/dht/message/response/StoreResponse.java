@@ -1,6 +1,7 @@
 package com.github.bcap.dht.message.response;
 
 import java.io.Serializable;
+import java.util.SortedMap;
 
 public class StoreResponse extends Response implements Serializable {
 
@@ -8,5 +9,9 @@ public class StoreResponse extends Response implements Serializable {
 
 	public StoreResponse() {
 		super();
+	}
+	
+	public void addToStringProperties(SortedMap<String, Object> propertiesMap) {
+		super.addToStringProperties(propertiesMap);
 	}
 }

@@ -1,6 +1,7 @@
 package com.github.bcap.dht.message.request;
 
 import java.io.Serializable;
+import java.util.SortedMap;
 
 public class StoreRequest extends IdentifierRequest implements Serializable {
 
@@ -18,5 +19,10 @@ public class StoreRequest extends IdentifierRequest implements Serializable {
 
 	public void setData(byte[] data) {
 		this.data = data;
+	}
+	
+	public void addToStringProperties(SortedMap<String, Object> propertiesMap) {
+		super.addToStringProperties(propertiesMap);
+		propertiesMap.put("data.length", data != null ? data.length : "null");
 	}
 }

@@ -1,6 +1,7 @@
 package com.github.bcap.dht.message.response;
 
 import java.io.Serializable;
+import java.util.SortedMap;
 
 public class PingResponse extends Response implements Serializable {
 
@@ -8,5 +9,9 @@ public class PingResponse extends Response implements Serializable {
 
 	public PingResponse() {
 		super();
+	}
+	
+	public void addToStringProperties(SortedMap<String, Object> propertiesMap) {
+		super.addToStringProperties(propertiesMap);
 	}
 }

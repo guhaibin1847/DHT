@@ -1,6 +1,7 @@
 package com.github.bcap.dht.message.request;
 
 import java.io.Serializable;
+import java.util.SortedMap;
 
 public class FindValueRequest extends IdentifierRequest implements Serializable {
 
@@ -8,6 +9,10 @@ public class FindValueRequest extends IdentifierRequest implements Serializable 
 
 	public FindValueRequest() {
 		super();
+	}
+	
+	public void addToStringProperties(SortedMap<String, Object> propertiesMap) {
+		super.addToStringProperties(propertiesMap);
 	}
 
 }

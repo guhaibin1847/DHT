@@ -2,10 +2,14 @@ package com.github.bcap.dht.message;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.SortedMap;
+import java.util.TreeMap;
+import java.util.Map.Entry;
 
 import com.github.bcap.dht.node.Contact;
+import com.github.bcap.dht.util.ToStringFriendly;
 
-public abstract class Message implements Serializable {
+public abstract class Message implements Serializable, ToStringFriendly {
 
 	protected static final long serialVersionUID = 1L;
 
@@ -15,6 +19,38 @@ public abstract class Message implements Serializable {
 	private Contact destination;
 	private long conversationId;
 	private transient Date issuedDate;
+	
+
+	public String toString() {
+		final String separator = ", ";
+
+		StringBuilder builder = new StringBuilder("[");
+		builder.append("type: ");
+		builder.append(this.getClass().getSimpleName());
+		builder.append(separator);
+		
+		SortedMap<String, Object> map = new TreeMap<String, Object>();
+		this.addToStringProperties(map);
+		
+		for (Entry<String, Object> entry: map.entrySet()) {
+			builder.append(entry.getKey());
+			builder.append(": ");
+			builder.append(entry.getValue());
+			builder.append(separator);
+		}
+		builder.delete(builder.length() - separator.length(), builder.length());
+		
+		builder.append("]");
+		
+		return builder.toString();
+	}
+	
+	public void addToStringProperties(SortedMap<String, Object> propertiesMap) {
+		propertiesMap.put("source", source);
+		propertiesMap.put("destination", destination);
+		propertiesMap.put("conversationId", conversationId);
+		propertiesMap.put("issuedDate", issuedDate);
+	}
 	
 	public Contact getSource() {
 		return source;

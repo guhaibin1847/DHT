@@ -2,6 +2,7 @@ package com.github.bcap.dht.message.response;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.SortedMap;
 
 import com.github.bcap.dht.node.Contact;
 
@@ -21,6 +22,11 @@ public class FindNodeResponse extends Response implements Serializable {
 	
 	public void setContacts(Collection<Contact> contacts) {
 		this.contacts = contacts;
+	}
+	
+	public void addToStringProperties(SortedMap<String, Object> propertiesMap) {
+		super.addToStringProperties(propertiesMap);
+		propertiesMap.put("contacts.size", contacts != null ? contacts.size() : "null");
 	}
 }
 

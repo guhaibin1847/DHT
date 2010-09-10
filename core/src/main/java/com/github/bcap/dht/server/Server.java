@@ -18,6 +18,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -68,7 +69,9 @@ public class Server extends Thread implements Runnable {
 
 	private boolean hasToRun = true;
 	private boolean running = false;
-
+	
+	private CountDownLatch startingLatch = new CountDownLatch(1);
+	
 	public Server(int port) throws UnknownHostException {
 		this(Inet4Address.getByName("0.0.0.0"), port);
 	}
@@ -92,18 +95,21 @@ public class Server extends Thread implements Runnable {
 	@Override
 	public void run() {
 		running = true;
-
+		
 		logger.info("Starting server on adddress " + ip + ":" + port);
 
 		addShutdownHook();
 
 		createWorkerThreadPool();
-
+			
 		try {
 			logger.debug("Opening socket on address " + ip + ":" + port + " with a message backlog of size " + backlogSize);
 			serverSocket = new ServerSocket(port, backlogSize, ip);
 
 			logger.info("Server started, waiting for connections");
+			
+			startingLatch.countDown();
+			
 			while (hasToRun) {
 				try {
 					Socket socket = serverSocket.accept();
@@ -121,8 +127,18 @@ public class Server extends Thread implements Runnable {
 		} catch (IOException e) {
 			logger.fatal("Could not create main server socket!", e);
 		}
-
+		
 		running = false;
+	}
+	
+	public synchronized void start() {
+		super.start();
+		
+		try {
+			startingLatch.await();
+		} catch (InterruptedException e) {
+			logger.warn("Interrupted while waiting for server start", e);
+		}
 	}
 
 	class Worker implements Runnable {
@@ -228,7 +244,9 @@ public class Server extends Thread implements Runnable {
 	public void shutdown() {
 		if (running) {
 			logger.info("Shutting down server " + this.getName());
+			
 			this.hasToRun = false;
+			
 			if (this.serverSocket != null) {
 				try {
 					this.serverSocket.close();
@@ -236,7 +254,10 @@ public class Server extends Thread implements Runnable {
 					logger.error("IOException while trying to close the server main socket", e);
 				}
 			}
-			workerThreadPool.shutdown();
+			
+			if(workerThreadPool != null)
+				workerThreadPool.shutdown();
+			
 			logger.debug("Server " + this.getName() + " successfully shutted down");
 		}
 	}
@@ -358,38 +379,4 @@ public class Server extends Thread implements Runnable {
 			throw new IllegalStateException("Cannot change the server port as the server is already running");
 		this.port = port;
 	}
-
-	public static void main(String[] args) throws Exception {
-		BigInteger nodeId = BigInteger.ONE.shiftLeft(2);
-		Node node = new Node(nodeId);
-		
-		Server server = new Server(50000);
-		server.addDefaultHandlers();
-		server.addNode(node);
-		server.start();
-		
-		Thread.sleep(50);
-		
-		BigInteger clientId = BigInteger.ONE.shiftLeft(3);
-		Contact source = new Contact(clientId, InetAddress.getByName("localhost"), 50001);
-		Contact destination = new Contact(nodeId, InetAddress.getByName("localhost"), 50000);
-		
-		Socket socket = new Socket();
-		socket.connect(new InetSocketAddress(destination.getIp(), destination.getPort()));
-		
-		PingRequest request = new PingRequest();
-		request.setSource(source);
-		request.setDestination(destination);
-		
-		ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-		out.writeObject(request);
-		
-		ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-		PingResponse response = (PingResponse) in.readObject();
-		System.out.println(response);
-
-		out.close();
-		in.close();
-	}
-
 }
