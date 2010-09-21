@@ -28,7 +28,7 @@ public class ConcurrentMessageSender implements MessageSender {
 	
 	public ConcurrentMessageSender(int maxConcurrentMessages) {
 		this.workerQueue = new LinkedBlockingDeque<Runnable>();
-		this.workerThreadPool = new ThreadPoolExecutor(1, maxConcurrentMessages, 30, TimeUnit.SECONDS, workerQueue);
+		this.workerThreadPool = new ThreadPoolExecutor(maxConcurrentMessages, maxConcurrentMessages, 30, TimeUnit.SECONDS, workerQueue);
 
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			public void run() {
