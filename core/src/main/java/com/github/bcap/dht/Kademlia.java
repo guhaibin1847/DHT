@@ -18,8 +18,8 @@ public class Kademlia {
 		InetAddress ip = InetAddress.getLocalHost();
 		Integer port = 5000;
 		
-		Node serverNode = new Node(id);
-		Contact serverContact = new Contact(id, ip, port);
+		Node serverNode = new Node(id, ip, port);
+		Contact serverContact = serverNode.asContact();
 		Contact clientContact = new Contact(id.shiftLeft(1), ip, port);
 
 		final Server server = new Server(ip, port);
@@ -38,7 +38,9 @@ public class Kademlia {
 				server.shutdown();
 				sender.shutdown();
 			}
+
+			public void handleException(Exception exception) {
+			}
 		});
-		
 	}
 }
