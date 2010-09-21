@@ -6,4 +6,6 @@ public interface ResponseHandler {
 
 	public void handleResponse(Response response);
 	
+	public void handleException(Exception exception);
+	
 }
