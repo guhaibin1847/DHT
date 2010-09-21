@@ -1,12 +1,16 @@
 package com.github.bcap.dht.client.operation;
 
 import com.github.bcap.dht.message.response.Response;
+import com.github.bcap.dht.node.Identifier;
 import com.github.bcap.dht.node.Node;
 
 public class FindNode extends Operation<FindNodeResult> {
 
-	public FindNode(Node source) {
+	private Identifier key;
+	
+	public FindNode(Node source, Identifier key) {
 		super(source);
+		this.key = key;
 	}
 	
 	protected void executeImpl() {
