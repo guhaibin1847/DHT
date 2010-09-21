@@ -34,6 +34,10 @@ public class Contact extends Identifier implements Serializable {
 		this.discoveryDate = new Date();
 		this.lastAliveDate = new Date();
 	}
+	
+	public Contact asContact() {
+		return new Contact(super.getValue(), this.getIp(), this.getPort());
+	}
 
 	public InetAddress getIp() {
 		return ip;

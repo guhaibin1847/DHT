@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
 import com.github.bcap.dht.client.MessageSender;
 import com.github.bcap.dht.client.ResponseHandler;
 import com.github.bcap.dht.message.request.Request;
-import com.github.bcap.dht.node.Contact;
+import com.github.bcap.dht.node.Node;
 
 public abstract class Operation <T extends OperationResult> implements ResponseHandler {
 
@@ -21,9 +21,9 @@ public abstract class Operation <T extends OperationResult> implements ResponseH
 	private T result;
 	private CountDownLatch resultLatch = new CountDownLatch(1);
 
-	private Contact source;
+	private Node source;
 	
-	public Operation(Contact source) {
+	public Operation(Node source) {
 		this.source = source;
 	}
 	
@@ -49,7 +49,7 @@ public abstract class Operation <T extends OperationResult> implements ResponseH
 	}
 
 	protected void sendRequest(Request request) {
-		request.setSource(source);
+		request.setSource(source.asContact());
 		messageServer.send(request, this);
 	}
 
@@ -60,7 +60,6 @@ public abstract class Operation <T extends OperationResult> implements ResponseH
 	public void setMessageServer(MessageSender server) {
 		this.messageServer = server;
 	}
-
 }
 
 class CallableResult<T extends OperationResult> implements Callable<T> {
@@ -74,5 +73,4 @@ class CallableResult<T extends OperationResult> implements Callable<T> {
 	public T call() throws Exception {
 		return operation.getResult();
 	}
-
 }

@@ -1,11 +1,11 @@
 package com.github.bcap.dht.client.operation;
 
 import com.github.bcap.dht.message.response.Response;
-import com.github.bcap.dht.node.Contact;
+import com.github.bcap.dht.node.Node;
 
 public class FindNode extends Operation<FindNodeResult> {
 
-	public FindNode(Contact source) {
+	public FindNode(Node source) {
 		super(source);
 	}
 	

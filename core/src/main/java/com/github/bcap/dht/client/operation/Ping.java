@@ -4,12 +4,13 @@ import com.github.bcap.dht.message.request.PingRequest;
 import com.github.bcap.dht.message.response.PingResponse;
 import com.github.bcap.dht.message.response.Response;
 import com.github.bcap.dht.node.Contact;
+import com.github.bcap.dht.node.Node;
 
 public class Ping extends Operation<PingResult> {
 
 	private Contact destination;
 
-	public Ping(Contact source, Contact destination) {
+	public Ping(Node source, Contact destination) {
 		super(source);
 		this.destination = destination;
 	}

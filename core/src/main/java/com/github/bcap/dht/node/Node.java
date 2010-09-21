@@ -2,10 +2,11 @@ package com.github.bcap.dht.node;
 
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.net.InetAddress;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class Node extends Identifier implements Serializable {
+public class Node extends Contact implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -17,8 +18,8 @@ public class Node extends Identifier implements Serializable {
 		init();
 	}
 	
-	public Node(BigInteger value) {
-		super(value);
+	public Node(BigInteger value, InetAddress ip, int port) {
+		super(value, ip, port);
 		init();
 	}
 	

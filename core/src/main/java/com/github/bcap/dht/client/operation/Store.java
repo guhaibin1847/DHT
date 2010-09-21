@@ -5,6 +5,7 @@ import com.github.bcap.dht.message.response.Response;
 import com.github.bcap.dht.message.response.StoreResponse;
 import com.github.bcap.dht.node.Contact;
 import com.github.bcap.dht.node.Identifier;
+import com.github.bcap.dht.node.Node;
 
 public class Store extends Operation<StoreResult> {
 
@@ -12,7 +13,7 @@ public class Store extends Operation<StoreResult> {
 	private byte[] data;
 	private Contact destination;
 	
-	public Store(Contact source, Contact destination, Identifier key, byte[] data) {
+	public Store(Node source, Contact destination, Identifier key, byte[] data) {
 		super(source);
 		this.destination = destination;
 		this.key = key;
