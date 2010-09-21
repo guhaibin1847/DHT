@@ -72,8 +72,8 @@ public class Server extends Thread implements Runnable {
 	
 	private CountDownLatch startingLatch = new CountDownLatch(1);
 	
-	public Server(int port) throws UnknownHostException {
-		this(Inet4Address.getByName("0.0.0.0"), port);
+	public Server(int port) {
+		this(null, port);
 	}
 	
 	public Server(InetAddress ip, int port) {
@@ -81,6 +81,16 @@ public class Server extends Thread implements Runnable {
 	}
 
 	public Server(InetAddress ip, int port, int backlogSize, int minimumPoolSize, int maximumPoolSize, long poolThreadAliveTime) {
+		if(ip == null) {
+			try {
+				ip = Inet4Address.getByName(null);
+			} catch (UnknownHostException e) {
+				String msg = "UnknowHostException should never occur while trying to get the loopback INetAddress";
+				logger.fatal(msg, e);
+				throw new RuntimeException(msg, e);
+			}
+		}
+		
 		this.ip = ip;
 		this.port = port;
 		this.backlogSize = backlogSize;
