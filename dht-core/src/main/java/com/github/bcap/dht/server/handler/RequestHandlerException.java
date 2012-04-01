@@ -1,4 +1,4 @@
-package com.github.bcap.dht.server.handler;
+package me.bcap.dht.server.handler;
 
 public class RequestHandlerException extends Exception {
 

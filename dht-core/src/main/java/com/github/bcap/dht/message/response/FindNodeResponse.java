@@ -1,10 +1,10 @@
-package com.github.bcap.dht.message.response;
+package me.bcap.dht.message.response;
 
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.SortedMap;
 
-import com.github.bcap.dht.node.Contact;
+import me.bcap.dht.node.Contact;
 
 public class FindNodeResponse extends Response implements Serializable {
 

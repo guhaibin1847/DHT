@@ -1,4 +1,4 @@
-package com.github.bcap.dht.server.handler;
+package me.bcap.dht.server.handler;
 
 import static org.junit.Assert.*;
 
@@ -10,12 +10,12 @@ import java.util.Collection;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.github.bcap.dht.message.request.FindNodeRequest;
-import com.github.bcap.dht.message.response.FindNodeResponse;
-import com.github.bcap.dht.node.Bucket;
-import com.github.bcap.dht.node.Contact;
-import com.github.bcap.dht.node.Identifier;
-import com.github.bcap.dht.node.Node;
+import me.bcap.dht.message.request.FindNodeRequest;
+import me.bcap.dht.message.response.FindNodeResponse;
+import me.bcap.dht.node.Bucket;
+import me.bcap.dht.node.Contact;
+import me.bcap.dht.node.Identifier;
+import me.bcap.dht.node.Node;
 
 public class FindNodeRequestHandlerTest {
 

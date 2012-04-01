@@ -1,9 +1,9 @@
-package com.github.bcap.dht.server.handler;
+package me.bcap.dht.server.handler;
 
-import com.github.bcap.dht.message.request.Request;
-import com.github.bcap.dht.message.response.PingResponse;
-import com.github.bcap.dht.message.response.Response;
-import com.github.bcap.dht.node.Node;
+import me.bcap.dht.message.request.Request;
+import me.bcap.dht.message.response.PingResponse;
+import me.bcap.dht.message.response.Response;
+import me.bcap.dht.node.Node;
 
 public class PingRequestHandler extends RequestHandler {
 

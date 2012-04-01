@@ -1,6 +1,6 @@
-package com.github.bcap.dht.client;
+package me.bcap.dht.client;
 
-import com.github.bcap.dht.message.request.Request;
+import me.bcap.dht.message.request.Request;
 
 public interface MessageSender {
 	

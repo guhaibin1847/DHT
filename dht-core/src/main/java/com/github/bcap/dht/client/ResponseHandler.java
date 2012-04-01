@@ -1,6 +1,6 @@
-package com.github.bcap.dht.client;
+package me.bcap.dht.client;
 
-import com.github.bcap.dht.message.response.Response;
+import me.bcap.dht.message.response.Response;
 
 public interface ResponseHandler {
 

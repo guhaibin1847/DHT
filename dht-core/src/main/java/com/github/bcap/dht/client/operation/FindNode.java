@@ -1,8 +1,8 @@
-package com.github.bcap.dht.client.operation;
+package me.bcap.dht.client.operation;
 
-import com.github.bcap.dht.message.response.Response;
-import com.github.bcap.dht.node.Identifier;
-import com.github.bcap.dht.node.Node;
+import me.bcap.dht.message.response.Response;
+import me.bcap.dht.node.Identifier;
+import me.bcap.dht.node.Node;
 
 public class FindNode extends Operation<FindNodeResult> {
 

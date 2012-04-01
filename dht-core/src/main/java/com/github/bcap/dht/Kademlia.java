@@ -1,16 +1,16 @@
-package com.github.bcap.dht;
+package me.bcap.dht;
 
 import java.math.BigInteger;
 import java.net.InetAddress;
 
-import com.github.bcap.dht.client.ConcurrentMessageSender;
-import com.github.bcap.dht.client.ResponseHandler;
-import com.github.bcap.dht.message.request.FindNodeRequest;
-import com.github.bcap.dht.message.response.Response;
-import com.github.bcap.dht.node.Contact;
-import com.github.bcap.dht.node.Identifier;
-import com.github.bcap.dht.node.Node;
-import com.github.bcap.dht.server.Server;
+import me.bcap.dht.client.ConcurrentMessageSender;
+import me.bcap.dht.client.ResponseHandler;
+import me.bcap.dht.message.request.FindNodeRequest;
+import me.bcap.dht.message.response.Response;
+import me.bcap.dht.node.Contact;
+import me.bcap.dht.node.Identifier;
+import me.bcap.dht.node.Node;
+import me.bcap.dht.server.Server;
 
 public class Kademlia {
 	public static void main(String[] args) throws Exception {

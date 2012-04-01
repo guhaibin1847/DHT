@@ -1,4 +1,4 @@
-package com.github.bcap.dht.message.response;
+package me.bcap.dht.message.response;
 
 import java.io.Serializable;
 import java.util.SortedMap;

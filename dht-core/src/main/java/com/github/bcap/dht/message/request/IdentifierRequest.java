@@ -1,9 +1,9 @@
-package com.github.bcap.dht.message.request;
+package me.bcap.dht.message.request;
 
 import java.io.Serializable;
 import java.util.SortedMap;
 
-import com.github.bcap.dht.node.Identifier;
+import me.bcap.dht.node.Identifier;
 
 public abstract class IdentifierRequest extends Request implements Serializable {
 

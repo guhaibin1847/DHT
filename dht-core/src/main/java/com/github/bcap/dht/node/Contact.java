@@ -1,4 +1,4 @@
-package com.github.bcap.dht.node;
+package me.bcap.dht.node;
 
 import java.io.Serializable;
 import java.math.BigInteger;

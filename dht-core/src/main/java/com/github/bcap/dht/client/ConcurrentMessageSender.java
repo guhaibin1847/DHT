@@ -1,4 +1,4 @@
-package com.github.bcap.dht.client;
+package me.bcap.dht.client;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,9 +13,9 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 
-import com.github.bcap.dht.message.request.Request;
-import com.github.bcap.dht.message.response.Response;
-import com.github.bcap.dht.node.Contact;
+import me.bcap.dht.message.request.Request;
+import me.bcap.dht.message.response.Response;
+import me.bcap.dht.node.Contact;
 
 public class ConcurrentMessageSender implements MessageSender {
 

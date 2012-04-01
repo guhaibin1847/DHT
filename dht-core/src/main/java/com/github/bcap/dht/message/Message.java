@@ -1,4 +1,4 @@
-package com.github.bcap.dht.message;
+package me.bcap.dht.message;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -6,8 +6,8 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.Map.Entry;
 
-import com.github.bcap.dht.node.Contact;
-import com.github.bcap.dht.util.ToStringFriendly;
+import me.bcap.dht.node.Contact;
+import me.bcap.dht.util.ToStringFriendly;
 
 public abstract class Message implements Serializable, ToStringFriendly {
 

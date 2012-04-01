@@ -1,4 +1,4 @@
-package com.github.bcap.dht.client.operation;
+package me.bcap.dht.client.operation;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
@@ -7,10 +7,10 @@ import java.util.concurrent.FutureTask;
 
 import org.apache.log4j.Logger;
 
-import com.github.bcap.dht.client.MessageSender;
-import com.github.bcap.dht.client.ResponseHandler;
-import com.github.bcap.dht.message.request.Request;
-import com.github.bcap.dht.node.Node;
+import me.bcap.dht.client.MessageSender;
+import me.bcap.dht.client.ResponseHandler;
+import me.bcap.dht.message.request.Request;
+import me.bcap.dht.node.Node;
 
 public abstract class Operation <T extends OperationResult> implements ResponseHandler {
 

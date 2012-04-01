@@ -1,12 +1,12 @@
-package com.github.bcap.dht.server.handler;
+package me.bcap.dht.server.handler;
 
 import java.util.Date;
 
-import com.github.bcap.dht.message.request.Request;
-import com.github.bcap.dht.message.response.Response;
-import com.github.bcap.dht.node.Contact;
-import com.github.bcap.dht.node.Node;
-import com.github.bcap.dht.server.Server;
+import me.bcap.dht.message.request.Request;
+import me.bcap.dht.message.response.Response;
+import me.bcap.dht.node.Contact;
+import me.bcap.dht.node.Node;
+import me.bcap.dht.server.Server;
 
 public abstract class RequestHandler {
 	

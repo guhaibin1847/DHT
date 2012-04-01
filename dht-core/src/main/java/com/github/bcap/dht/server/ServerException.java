@@ -1,4 +1,4 @@
-package com.github.bcap.dht.server;
+package me.bcap.dht.server;
 
 public class ServerException extends Exception {
 

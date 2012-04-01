@@ -1,4 +1,4 @@
-package com.github.bcap.dht.util;
+package me.bcap.dht.util;
 
 import java.util.SortedMap;
 
