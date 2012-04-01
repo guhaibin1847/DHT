@@ -8,7 +8,7 @@
 	<inceptionYear>2010</inceptionYear>
 
 	<modules>
-		<module>core</module>
+		<module>dht-core</module>
 	</modules>
 
 	<developers>
