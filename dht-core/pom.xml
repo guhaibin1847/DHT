@@ -13,26 +13,6 @@
 	
 	<name>Distributed Hash Table Lab - Core</name>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.dstovall</groupId>
-				<artifactId>onejar-maven-plugin</artifactId>
-				<version>1.4.3</version>
-				<executions>
-					<execution>
-						<configuration>
-							<onejarVersion>0.97</onejarVersion>
-						</configuration>
-						<goals>
-							<goal>one-jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.jdom</groupId>
